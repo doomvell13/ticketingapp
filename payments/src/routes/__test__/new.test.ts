@@ -1,12 +1,10 @@
 import mongoose from 'mongoose';
-import { OrderStatus } from '@aoticketing/common';
 import request from 'supertest';
+import { OrderStatus } from '@aoticketing/common';
 import { app } from '../../app';
 import { Order } from '../../models/order';
 import { stripe } from '../../stripe';
 import { Payment } from '../../models/payment';
-
-// jest.mock('../../stripe.ts');
 
 it('returns a 404 when purchasing an order that does not exist', async () => {
   await request(app)
@@ -24,7 +22,7 @@ it('returns a 401 when purchasing an order that doesnt belong to the user', asyn
     id: new mongoose.Types.ObjectId().toHexString(),
     userId: new mongoose.Types.ObjectId().toHexString(),
     version: 0,
-    price: 30,
+    price: 20,
     status: OrderStatus.Created,
   });
   await order.save();
@@ -33,7 +31,7 @@ it('returns a 401 when purchasing an order that doesnt belong to the user', asyn
     .post('/api/payments')
     .set('Cookie', global.signin())
     .send({
-      token: 'sddsdsdd',
+      token: 'asldkfj',
       orderId: order.id,
     })
     .expect(401);
@@ -45,7 +43,7 @@ it('returns a 400 when purchasing a cancelled order', async () => {
     id: new mongoose.Types.ObjectId().toHexString(),
     userId,
     version: 0,
-    price: 30,
+    price: 20,
     status: OrderStatus.Cancelled,
   });
   await order.save();
@@ -55,7 +53,7 @@ it('returns a 400 when purchasing a cancelled order', async () => {
     .set('Cookie', global.signin(userId))
     .send({
       orderId: order.id,
-      token: 'sdsdsds',
+      token: 'asdlkfj',
     })
     .expect(400);
 });

@@ -28,9 +28,10 @@ beforeEach(async () => {
     await collection.deleteMany({});
   }
 });
+
 afterAll(async () => {
   await mongo.stop();
-  await mongoose.connection.close();
+  mongoose.connection.close();
 });
 
 global.signin = (id?: string) => {
