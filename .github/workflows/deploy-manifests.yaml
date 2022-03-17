@@ -2,12 +2,10 @@ name: deploy-manifests
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches: 
+      - master
     paths:
       - 'infra/**'
-
 
 jobs:
   build:
@@ -17,5 +15,5 @@ jobs:
       - uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      - run: doctl kubernetes cluster kubeconfig save ticketing-project
+      - run: doctl kubernetes cluster kubeconfig save ticketing
       - run: kubectl apply -f infra/k8s && kubectl apply -f infra/k8s-prod
